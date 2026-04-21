@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import numpy as np
-import open3d as o3d
 
 
 def rgbd_to_world_points(
@@ -40,7 +39,9 @@ def rgbd_to_world_points(
     return world_points, colors
 
 
-def make_open3d_cloud(points: np.ndarray, colors: np.ndarray) -> o3d.geometry.PointCloud:
+def make_open3d_cloud(points: np.ndarray, colors: np.ndarray):
+    import open3d as o3d
+
     cloud = o3d.geometry.PointCloud()
     cloud.points = o3d.utility.Vector3dVector(points.astype(np.float64))
     cloud.colors = o3d.utility.Vector3dVector(colors.astype(np.float64))

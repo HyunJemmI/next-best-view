@@ -40,5 +40,12 @@ planning:
     occlusion_relief: 0.25
     move_cost: 0.35
 
+viewer:
+  default_mode: none
+  fps: 30
+  transition_steps: 24
+  hold_final_seconds: 1.5
+  open3d_point_size: 4.0
+
 outputs:
   base_dir: outputs

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
-from scipy.spatial.transform import Rotation
+from scipy.spatial.transform import Rotation, Slerp
 
 
 BODY_TO_CV_ROTATION = np.diag([1.0, -1.0, -1.0]).astype(np.float32)
@@ -74,3 +74,26 @@ def camera_transform_to_mujoco_quat(transform_world_camera_cv: np.ndarray) -> np
 
 def camera_position_from_transform(transform_world_camera_cv: np.ndarray) -> np.ndarray:
     return np.asarray(transform_world_camera_cv[:3, 3], dtype=np.float32)
+
+
+def interpolate_transforms(
+    start_transform: np.ndarray,
+    end_transform: np.ndarray,
+    num_steps: int,
+) -> list[np.ndarray]:
+    if num_steps <= 1:
+        return [np.asarray(end_transform, dtype=np.float32)]
+
+    key_times = [0.0, 1.0]
+    rotations = Rotation.from_matrix(
+        np.stack([start_transform[:3, :3], end_transform[:3, :3]], axis=0)
+    )
+    slerp = Slerp(key_times, rotations)
+    translations = np.stack([start_transform[:3, 3], end_transform[:3, 3]], axis=0)
+
+    transforms: list[np.ndarray] = []
+    for alpha in np.linspace(0.0, 1.0, num=num_steps, endpoint=True):
+        rotation = slerp([float(alpha)]).as_matrix()[0]
+        translation = (1.0 - alpha) * translations[0] + alpha * translations[1]
+        transforms.append(make_transform(rotation, translation))
+    return transforms

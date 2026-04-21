@@ -98,6 +98,35 @@ bash setup.sh
 .venv/bin/python run_demo.py
 ```
 
+### 4. 실시간 viewer 실행
+
+CLI 로그만 보는 대신 실제로 움직이는 시뮬레이션을 보려면 viewer 모드를 켜면 됩니다.
+
+```bash
+.venv/bin/python run_demo.py --viewer scene
+```
+
+지원 모드:
+- `--viewer scene`
+  - MuJoCo 장면 viewer
+  - 카메라 rig marker가 실제로 오브젝트 주위를 이동하는 모습을 볼 수 있음
+- `--viewer debug`
+  - live RGB / depth / top-down map / candidate score figure
+- `--viewer map`
+  - Open3D global map viewer
+- `--viewer all`
+  - 가능한 viewer를 함께 실행
+
+추가 옵션:
+
+```bash
+.venv/bin/python run_demo.py --viewer scene --iterations 6 --transition-steps 32 --viewer-fps 30
+```
+
+macOS 참고:
+- `scene` viewer는 MuJoCo 요구사항 때문에 내부적으로 `mjpython`으로 자동 재실행됩니다.
+- 데스크톱 세션에서 실행해야 창이 정상적으로 열립니다.
+
 ## 주요 산출물
 
 - `outputs/debug/`
@@ -142,6 +171,12 @@ bash setup.sh
   - 후보 점수 계산과 다음 시점 선택
 - `src/planning/reachability.py`
   - 현재는 arm feasibility stub
+
+### Viewer
+- `src/utils/visualization.py`
+  - scene viewer
+  - Open3D map viewer
+  - live debug viewer
 
 ## 문서
 
