@@ -1,0 +1,44 @@
+experiment:
+  name: mac_gaussian_nbv_mvp
+  seed: 7
+
+query:
+  text: "find the blue target object and inspect graspable surfaces"
+
+sim:
+  image_width: 640
+  image_height: 480
+  camera_name: active_cam
+  initial_radius: 0.78
+  initial_azimuth_deg: -35.0
+  initial_elevation_deg: 22.0
+  candidate_radius: 0.78
+  azimuth_samples: 10
+  elevation_candidates_deg: [10.0, 22.0, 35.0]
+  world_up: [0.0, 0.0, 1.0]
+
+perception:
+  depth_min: 0.05
+  depth_max: 3.0
+  point_stride: 2
+  gaussian_voxel_size: 0.035
+  target_radius_hint: 0.22
+
+model:
+  device: auto
+  embedding_dim: 32
+  feature_jitter_scale: 0.22
+
+planning:
+  iterations: 5
+  revisit_penalty: 0.15
+  min_view_novelty_deg: 18.0
+  weights:
+    delta_u: 1.0
+    lang_affinity: 0.8
+    consistency_gain: 0.6
+    occlusion_relief: 0.25
+    move_cost: 0.35
+
+outputs:
+  base_dir: outputs

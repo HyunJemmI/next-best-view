@@ -1,0 +1,41 @@
+<mujoco model="next_best_view_scene">
+  <compiler angle="degree" coordinate="local"/>
+  <option timestep="0.01" gravity="0 0 -9.81"/>
+
+  <visual>
+    <global offwidth="640" offheight="480"/>
+    <quality shadowsize="2048"/>
+  </visual>
+
+  <asset>
+    <texture name="skybox" type="skybox" builtin="gradient" rgb1="0.95 0.97 1.0" rgb2="0.65 0.75 0.92" width="256" height="256"/>
+    <texture name="floor_grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.87 0.88 0.90" rgb2="0.72 0.74 0.77"/>
+    <material name="floor_mat" texture="floor_grid" texrepeat="4 4" reflectance="0.1"/>
+    <material name="table_mat" rgba="0.73 0.66 0.58 1"/>
+    <material name="target_blue" rgba="0.22 0.43 0.85 1"/>
+    <material name="target_yellow" rgba="0.95 0.78 0.25 1"/>
+    <material name="occluder_mat" rgba="0.55 0.56 0.60 1"/>
+  </asset>
+
+  <worldbody>
+    <light name="sun" pos="0 0 2.2" dir="0 0 -1" diffuse="1 1 1" specular="0.2 0.2 0.2"/>
+    <geom name="floor" type="plane" size="2 2 0.05" material="floor_mat"/>
+
+    <body name="table" pos="0 0 0.34">
+      <geom name="table_top" type="box" size="0.38 0.38 0.02" material="table_mat"/>
+    </body>
+
+    <body name="target_root" pos="0 0 0.44">
+      <geom name="target_body" type="box" size="0.05 0.04 0.08" material="target_blue"/>
+      <geom name="target_handle" type="capsule" fromto="0.05 0.00 0.04 0.12 0.00 0.04" size="0.012" material="target_yellow"/>
+    </body>
+
+    <body name="occluder" pos="-0.16 0.03 0.47">
+      <geom name="occluder_panel" type="box" size="0.03 0.18 0.14" material="occluder_mat"/>
+    </body>
+
+    <body name="camera_rig" mocap="true" pos="0 -0.78 0.74">
+      <camera name="active_cam" pos="0 0 0" quat="1 0 0 0" fovy="55"/>
+    </body>
+  </worldbody>
+</mujoco>
